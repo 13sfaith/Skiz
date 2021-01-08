@@ -1,11 +1,11 @@
-
+require('custom-env').env('dev')
 const mysql = require('mysql')
 
 var connection = mysql.createConnection({
-    host: 'sql3.freemysqlhosting.net',
-    user: 'sql3383399',
-    password: 'Y55bvUuNDZ',
-    database: 'sql3383399'
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB_DB
 })
 
 // skis values(id, name, brand, price, length, type)

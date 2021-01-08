@@ -1,3 +1,5 @@
+require('custom-env').env('dev')
+
 const express = require('express')
 const mysql = require('mysql')
 const cors = require('cors')
@@ -8,14 +10,13 @@ app.use(cors())
 
 app.use(express.static('public'))
 
-
 function getConnect()
 {
 	var connection = mysql.createConnection({
-		host: 'sql3.freemysqlhosting.net',
-		user: 'sql3383399',
-		password: 'Y55bvUuNDZ',
-		database: 'sql3383399'
+		host: process.env.DB_HOST,
+		user: process.env.DB_USER,
+		password: process.env.DB_PASS,
+		database: process.env.DB_DB
 	})
 
 	return connection
