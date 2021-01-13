@@ -8,17 +8,9 @@
 		
 		<div id = "brand" class = "sep holder">
 			<h5>Brand</h5>
-			
-			<input type="checkbox" name="brand1">
-			<label for="brand1">Volkl</label><br>
-			
-			<input type="checkbox" name="brand2">
-			<label for="brand2">Armada</label><br>
-			
-			<input type="checkbox" name="brand2">
-			<label for="brand2">DPS Skis</label><br><br>
 
-            <Toggle />
+            <Toggle v-for="brand in brands" v-bind:key="brand.id" :info="brand" />
+            <br>
 		</div>
 		
 		<div id="length" class="holder">
@@ -81,18 +73,48 @@ export default {
 		type: String,
 	},
 	data() {
-		return { info : [] }
+		return { info : [], brands: [] }
 	},
 	mounted() {
 		fetch(`http://localhost:3000/api/browse/${this.type}`)
                 .then(res => res.json())
                 .then(payload => this.info = payload)
-                .then(this.popfill())
+                .then(payload => this.popfill(payload))
+    },
+    watch: {
+        $route () {
+            fetch(`http://localhost:3000/api/browse/${this.type}`)
+                .then(res => res.json())
+                .then(payload => this.info = payload)
+                .then(payload => this.popfill(payload))
+        }
     },
     methods: {
-        popfill() {
-            console.log("hoorah")
+        popfill(payload) {
+
+            let brndCnt = {}
+
+            for (let i = 0; i < payload.length; i++)
+            {
+                brndCnt[payload[i].brand] = i
+            }
+
+            let brndArr = []
+
+            for (let a in brndCnt)
+            {
+                brndArr.push({id: brndArr.length, name: a, active: false})
+            }
+
+            this.brands = brndArr
+        },
+
+        toggleActive(id) {
+            this.brands[id].active = !this.brands[id].active
         }
+    },
+    provide: function() {
+        return { toggleActive : this.toggleActive }
     }
 }
 

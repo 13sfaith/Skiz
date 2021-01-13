@@ -1,7 +1,7 @@
 <template>
   <div>
-    <input type="checkbox" name="name">
-    <label for="name">name</label><br>
+    <input type="checkbox" name="name" v-on:click="toggleActive(info.id)" >
+    <label for="name">{{ info.name }}</label><br>
   </div>
 
 </template>
@@ -10,6 +10,10 @@
 
   export default {
     name: "Toggle",
+    props: {
+        info: Object,
+    },
+    inject: ["toggleActive"]
   }
 
 </script>

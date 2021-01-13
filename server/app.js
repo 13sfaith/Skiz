@@ -22,12 +22,6 @@ function getConnect()
 	return connection
 }
 
-/*
-connection.connect(function(err) {
-	if (err) throw err
-	console.log('Connected to mysql database')
-})
-*/
 
 app.get('/api/browse', (req, res) => {
 	connection = getConnect()
@@ -41,6 +35,8 @@ app.get('/api/browse', (req, res) => {
 })
 
 app.get('/api/browse/:type', (req, res, next) => {
+	var start = new Date().getTime()
+	
 	connection = getConnect()
 
 	var type = req.params.type
@@ -51,6 +47,8 @@ app.get('/api/browse/:type', (req, res, next) => {
     })
 
 	connection.end()
+
+	console.log(new Date().getTime() - start)
 })
 
 app.get('/api/product/:type/:name', (req, res, next) => {
